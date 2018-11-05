@@ -1,0 +1,39 @@
+name: ${self:custom.serviceNameShort}-app
+# authenticationType: AMAZON_COGNITO_USER_POOLS
+authenticationType: API_KEY
+# userPoolConfig:
+#   awsRegion: eu-west-1 # required # region
+#   defaultAction: ALLOW
+#   userPoolId: ${self:custom.cognito.adminPoolId} # replace this with your Cognito User Pool Id
+# mappingTemplatesLocation: # defaults to mapping-templates
+mappingTemplates:
+  - dataSource: custom_lamba_datasource
+    type: Query
+    field: test
+    request: "test-request-mapping-template.vtl"
+    response: "test-response-mapping-template.vtl"
+    
+serviceRole: "AppSyncServiceRole"
+logConfig:
+  loggingRoleArn: { Fn::GetAtt: [AppSyncLoggingServiceRole, Arn] } # Where AppSyncLoggingServiceRole is a role with CloudWatch Logs write access
+  level: ERROR # Logging Level: NONE | ERROR | ALL
+# schema: # defaults schema.graphql
+dataSources:
+  - type: AWS_LAMBDA
+    name: custom_lamba_datasource
+    description: 'Lambda DataSource'
+    config:
+      lambdaFunctionArn: "arn:aws:lambda:${self:provider.region}:${self:custom.environment.ACCOUNT_ID}:function:${self:service.name}-${self:provider.stage}-lambda-datasource"
+      serviceRoleArn: { Fn::GetAtt: [AppSyncLambdaServiceRole, Arn] }
+  # - type: AMAZON_DYNAMODB
+  #   name: custom_dynamo_datasource
+  #   description: 'Custom Dynamo Datasource table'
+  #   config:
+  #     tableName: ${self:custom.input.dynamo.table.name}
+  #     serviceRoleArn: ${self:custom.input.dynamo.table.role.arn}
+  # - type: AMAZON_ELASTICSEARCH
+  #   name: custom_elasticsearch_datasource
+  #   description: 'ElasticSearch'
+  #   config:
+  #     endpoint: ${self:custom.input.elasticsearch.endpoint} # required 
+  #     serviceRoleArn: ${self:custom.input.elasticsearch.role.arn}

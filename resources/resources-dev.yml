@@ -1,0 +1,14 @@
+Resources:  
+
+  #ROLES
+  AppSyncLambdaServiceRole: ${file(resources/roles.yml):AppSyncLambdaServiceRole}
+  AppSyncLoggingServiceRole: ${file(resources/roles.yml):AppSyncLoggingServiceRole}
+
+  # #DYNAMODB
+  # userTable: ${file(resources/dynamo/user.yml):userTable}
+
+Outputs:
+  
+  # #DYNAMODB
+  # userTable:
+  #   Ref: SOSAngelsDashAlarmStateMachineDash${self:provider.stage} 

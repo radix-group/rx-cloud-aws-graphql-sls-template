@@ -1,0 +1,38 @@
+{
+  "env": {
+    "browser": true,
+    "node": true,
+    "es6": true
+  },
+  "extends": ["eslint:recommended", "typescript"],
+  "parser": "typescript-eslint-parser",
+  "settings": {
+    "import/parsers": {
+      "typescript-eslint-parser": ["ts", "tsx"]
+    },
+    "import/resolver": {
+      "node": {
+        "extensions": [
+          ".js",
+          ".tsx",
+          ".ts"
+        ]
+      }
+    }
+  },
+
+  "plugins": [
+    "typescript"
+  ],
+  "root": true,
+  "rules": {
+    "comma-dangle": 0,
+    "linebreak-style": 0,
+    "no-console": "off",
+    "no-unused-vars": "warn",
+    "no-undef": "error",
+    "typescript/explicit-function-return-type": [
+			"error"
+		]    
+  }
+}

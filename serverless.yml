@@ -1,0 +1,43 @@
+service:
+  name: rx-cloud-graphql-provider
+
+custom:
+  serviceNameWithUnderscore: rx_cloud_graphql_provider
+  serviceNameShort: rx-gql
+  defaultStage: dev
+  defaultRegion: eu-west-1
+  environment: ${file(environments/environment-${self:provider.stage}.yml)}
+  # documentation: ${file(resources/documentation.yml):documentation}
+  appSync: ${file(resources/appSync.yml)}
+
+
+plugins:
+  - serverless-webpack
+  - serverless-pseudo-parameters
+  - serverless-stack-output  
+  - serverless-iam-roles-per-function
+  - serverless-appsync-plugin
+
+
+provider:
+  name: aws
+  runtime: nodejs8.10
+  stage: ${opt:stage, self:custom.defaultStage}
+  region:  ${opt:region, self:custom.defaultRegion}
+  memorySize: 256
+  # iamRoleStatements:
+  #   - Effect: "Allow"
+  #     Action: 
+  #      - iot:*
+  #      - states:StartExecution
+  #      - states:DescribeExecution
+  #      - cognito-idp:*
+  #     Resource: "*"
+
+
+functions:
+
+  lambda-datasource: ${file(resources/functions.yml):lambda-datasource}
+
+
+resources: ${file(resources/resources-${self:provider.stage}.yml)}

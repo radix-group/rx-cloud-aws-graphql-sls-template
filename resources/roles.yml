@@ -1,0 +1,53 @@
+AppSyncLambdaServiceRole:
+  Type: "AWS::IAM::Role"
+  Properties:
+    RoleName: "${self:custom.serviceNameWithUnderscore}_custom_lambda_datasource_role"
+    AssumeRolePolicyDocument:
+      Version: "2012-10-17"
+      Statement:
+        -
+          Effect: "Allow"
+          Principal:
+            Service:
+              - "appsync.amazonaws.com"
+          Action:
+            - "sts:AssumeRole"
+    Policies:
+      -
+        PolicyName: "custom_lambda_datasource_role_policy"
+        PolicyDocument:
+          Version: "2012-10-17"
+          Statement:
+            -
+              Effect: "Allow"
+              Action:
+                - "lambda:invokeFunction"
+              Resource: '*'
+
+AppSyncLoggingServiceRole:
+  Type: "AWS::IAM::Role"
+  Properties:
+    RoleName: "${self:custom.serviceNameWithUnderscore}_appsync_logging"
+    AssumeRolePolicyDocument:
+      Version: "2012-10-17"
+      Statement:
+        -
+          Effect: "Allow"
+          Principal:
+            Service:
+              - "appsync.amazonaws.com"
+          Action:
+            - "sts:AssumeRole"
+    Policies:
+      -
+        PolicyName: "Logging-${self:custom.appSync.serviceRole}-Policy"
+        PolicyDocument:
+          Version: "2012-10-17"
+          Statement:
+            -
+              Effect: "Allow"
+              Action:
+                - "logs:CreateLogGroup"
+                - "logs:CreateLogStream"
+                - "logs:PutLogEvents"
+              Resource: '*'

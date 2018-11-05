@@ -1,0 +1,7 @@
+lambda-datasource:
+  handler: functions/gql-datasource.call
+  # iamRoleStatements:
+  #   - Effect: "Allow"        
+  #     Action:
+  #       - lambda:InvokeFunction        
+  #     Resource: "arn:aws:lambda:#{AWS::Region}:#{AWS::AccountId}:function:${self:service}-${self:provider.stage}-example-lambda"     
